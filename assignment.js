@@ -8,31 +8,41 @@ array. */}
 
 const findPairsWithSumWithTwoPointer = (arr, target) => {
   // This function finds all the pairs of elements in the array that add up to the given target.
-  // TC: O(n^2)
-  // SC: O(1)
+  // Time Complexity: O(N log N) + O(N) = O(N log N) - Sorting the array takes O(N log N) time, and the two-pointer traversal takes O(N) time.
+  // Space Complexity: O(1) - constant space complexity since the results are stored in the `results` array and the input array `arr` is modified in-place.
+
   const results = [];
   let N = arr.length;
-  let i = 0; let j = i + 1;
+  
+  // Sort the array in ascending order for efficient two-pointer approach
+  arr = arr.sort((a, b) => a - b);
 
-  while (i < N - 1 && j < N) {
-    // TC: O(1)
-    // SC: O(1)
+  let i = 0;
+  let j = N - 1;
+
+  while (i < j) {
+    // If the sum of elements at indices i and j is equal to the target,
+    // add the pair to the results array and move both pointers inward.
     if (arr[i] + arr[j] === target) {
       results.push([arr[i], arr[j]]);
-      i++, j++
-    } else {
-      // TC: O(1)
-      // SC: O(1)
-      if (j == N - 1) {
-        i++
-        j = i + 1
-      } else {
-        j++
-      }
+      i++;
+      j--;
+    }
+    // If the sum is less than the target, increment the left pointer (i)
+    // to consider larger elements.
+    else if (arr[i] + arr[j] < target) {
+      i++;
+    }
+    // If the sum is greater than the target, decrement the right pointer (j)
+    // to consider smaller elements.
+    else {
+      j--;
     }
   }
-  return results
+
+  return results;
 };
+
 
 const findPairsWithSumWithObject = (arr, target) => {
   // This function finds all the pairs of elements in the array that add up to the given target.
@@ -103,7 +113,7 @@ const main = () => {
   const arr = [1, 3, 2, 2, -4, -6, -2, 8];
   const target = 4;
   {/*const pairs = findPairsWithSumWithTwoPointer(arr, target);*/}
-  
+
   {/*I am calling the findPairsWithSumWithObject function instead of the findPairsWithSumWithTwoPointer function because it has a lower time complexity.*/}
   const pairs = findPairsWithSumWithObject(arr, target);
   const sortedPairs = sortArray(pairs);
